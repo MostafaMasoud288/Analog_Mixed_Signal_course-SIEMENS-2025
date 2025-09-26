@@ -1,0 +1,24 @@
+* LTspice sample netlist
+* You can write the netlist manually or generate it from your schematic editor GUI
+
+* Use the parameters (WN, LN, FN) and (WP, LP, FP) for NMOS and PMOS width, length, and no. of fingers, respectively
+* FN and FP may not be used in simple models
+.params LN WN LP WP FN FP
+
+* The model file(s) include statement(s) must have correct paths and do not forget the '.' in front of include.
+.include "E:\ADT_Windows_Release_v1.1.8\ADT_Windows_Release_v1.1.8\ADT/LTspice_example/ex_180nm.sp"
+
+* When you define the instances of the devices that you want to characterize you must observe the following:
+* 1. The device name must start with the letter 'M'.
+* 2. The model names must be consistent with the model file.
+* 3. The connections (net names) are ignored, so you can write any arbitrary nets (you can leave the devices floating).
+* 4. The parameters (AS, AD, PS, PD) should be defined in terms of the parameters (WN, FN, WP, FP).
+* 5. The braces '{}' around the parameters must be added as LTspice will not substitute the value if not found.
+
+M0 net1 net3 net4 net2 nch w={WN} l={LN} as={0.64u*{WN}} ad={0.64u*{WN}} ps={2*(0.64u+{WN})} pd={2*(0.64u+{WN})}
+M1 net5 net7 net8 net6 pch w={WP} l={LP} as={0.64u*{WP}} ad={0.64u*{WP}} ps={2*(0.64u+{WP})} pd={2*(0.64u+{WP})}
+
+* Put any simulation options you want to set (Ex: reltol, abstol, etc.). The temp is ignored and the temperature entered in ADT is used.
+* It is recommended not to change the options of LTspice to avoid increasing the LUT generation time.
+.options reltol=1e-3 abstol=1e-7 temp=27 tnom=27
+
