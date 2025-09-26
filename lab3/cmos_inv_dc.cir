@@ -1,0 +1,27 @@
+* CMOS Inverter DC Sweep
+** Circuit Description **
+
+* Power supply
+VDD 3 0 DC 1.8V
+
+* Input
+VIN 1 0 DC 0V
+
+* Circuit (PMOS on top, NMOS on bottom)
+M1 2 1 0 0 nmos_part1_2 W=10u L=180n     ; NMOS: Drain=2, Gate=1, Source=0, Bulk=0
+M2 2 1 3 3 pmos_part1_2 W=20u L=180n     ; PMOS: Drain=2, Gate=1, Source=3, Bulk=3
+
+* Include model files
+.lib "my_nmos.lib"
+.lib "my_pmos.lib"
+
+** Analysis Requests **
+.DC VIN 0 1.8 0.05
+
+** Output Requests **
+*.PROBE
+
+.plot V(2) vs V(1)
+.meas vm find V(1) when V(2)=V(1)
+
+.END

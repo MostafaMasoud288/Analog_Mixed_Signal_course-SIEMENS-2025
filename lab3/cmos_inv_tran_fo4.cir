@@ -1,0 +1,48 @@
+* CMOS inverter tran analysis
+
+** Inverter Subcircuit **
+.SUBCKT inverter 1 2 3 PARAMS: MULT=1
+M1 3 1 0 0 nch L=0.18u W=1u M={MULT}
+M2 3 1 2 2 pch L=0.18u W=2u M={MULT}
+.ENDS inverter
+
+** Circuit Description **
+* power supply
+V_VDD VDD 0 DC 1.8V
+
+* input (PULSE: 0 -> 1.8V, delay=0, rise=10ps, fall=10ps, width=1ns, period=2ns)
+V_VIN 1 0 PULSE (0 1.8 0 10p 10p 1n 2n)
+
+* inverters FO4
+X_I1 1 VDD 2 inverter PARAMS: MULT={4**0}    ; shape input
+X_I2 2 VDD 3 inverter PARAMS: MULT={4**1}    ; shape input
+X_I3 3 VDD 4 inverter PARAMS: MULT={4**2}    ; circuit under test
+X_I4 4 VDD 5 inverter PARAMS: MULT={4**3}    ; load output
+X_I5 5 VDD 6 inverter PARAMS: MULT={4**4}    ; load output
+
+** MOSFET Model **
+.inc "C:/Users/DELL/Desktop/Siemens AMS 2025/lab3/ee214b_hspice.sp"
+
+** Analysis Requests **
+.TRAN 2p 4n
+.PLOT TRAN V(1)
+.PLOT TRAN V(2)
+.PLOT TRAN V(3)
+.PLOT TRAN V(4)
+.PLOT TRAN V(5)
+
+
+** Output Requests **
+* Middle inverter input: node 3
+* Middle inverter output: node 4
+
+** Measure FO4 delay from V(4) to V(1)
+.MEASURE TRAN t4 TRIG V(4) VAL=0.9 RISE=1
+.MEASURE TRAN t1 TRIG V(3) VAL=0.9 FALL=1
+.MEASURE TRAN FO4_delay PARAM='t1 - t4'
+
+** Normalize delay by lambda (90 nm = 90e-9 m)
+.MEASURE TRAN FO4_normalized PARAM='FO4_delay / 90e-9'
+
+
+.END

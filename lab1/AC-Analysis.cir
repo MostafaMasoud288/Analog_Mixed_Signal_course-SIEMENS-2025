@@ -1,0 +1,35 @@
+OPAMP CIRCUIT SIMULATION
+*** opamp subcuircuit ***
+.subckt opamp 1 2 3
+* VCVS with gain 10000
+Eopamp 1 0 4 0 1
+Gp 0 4 2 3 0.6289              ; A0 = Gp * Rp
+* redundant current sources to avoid errors
+Iopen1 2 0 0A
+Iopen2 3 0 0A
+
+* Parameters
+Rp 4 0 15.9k                   ; dominant pole resistor
+Cp 4 0 10n                     ; dominant pole capacitor
+
+.ends opamp
+.PARAM R_feedback 9K
+*** Circuit ***
+* AC source for AC analysis
+Vsig IN+ 0 AC 1
+Rin IN- 0 1k                   ; Input resistor
+Rf IN- OUT {R_feedback}        ; Feedback resistor, using a parameter for sweep
+XOP OUT IN+ IN- opamp          ; Op-amp subcircuit
+
+*** AC Analysis ***
+.AC DEC 10 1 100Meg             ; Decade sweep, 10 points per decade, from 1Hz to 100MHz
+
+*** Parametric Sweep ***
+*.STEP PARAM R_feedback LIST 9k 4k
+
+*** Probes ***
+.PRINT AC V(OUT)
+.PLOT AC DB(V(OUT))
+
+
+.END

@@ -1,0 +1,33 @@
+* Simple RC Circuit
+
+* Circuit Description
+* RC low-pass filter with parametric sweep for CPAR
+
+* Parameters
+.PARAM CPAR=500p
+
+* Signal sources
+V1 1 0 AC 1
+
+* Circuit elements
+R1 1 2 1k
+C1 2 0 {CPAR}
+
+* Analysis request
+* Run ac sweep from 1Hz to 100MEG with 10 pts per decade
+.AC DEC 10 1 100MEG
+* Use parametric sweep for CPAR: 500p:500p:1.5n
+.STEP PARAM CPAR 500p 1.5n 500p
+*.STEP PARAM CPAR LIST 500p 1n 1.5n
+
+* Output request
+.PRINT AC V(1) V(2)
+.PLOT AC V(1) V(2)
+
+* Measure the peak
+.MEAS AC PEAK max mag(V(2))
+
+* Measure bandwidth using PEAK/sqrt(2)
+.MEAS AC BW WHEN mag(V(2))=PEAK/SQRT(2)
+
+.END

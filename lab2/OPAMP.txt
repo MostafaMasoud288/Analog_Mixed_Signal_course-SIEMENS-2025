@@ -1,0 +1,28 @@
+*** Flattened OPAMP Unity-Gain Circuit ***
+
+* AC source: signal applied to non-inverting input
+V1 1 0 1
+
+* --- Inlined Op-Amp Model ---
+* Equivalent to: XOP 6 5 6 opamp
+* Nodes: OUT=6, VIN+=5, VIN-=6
+
+* Internal nodes
+* 7 = internal node 4 from subckt
+
+* VCVS gain stage (A=1)
+E1 2 0 3 0 1
+
+* Gm stage (Gp) to create dominant pole
+G1 0 3 1 2 0.6289
+
+* Dominant pole RC
+R1 3 0 15.9k
+C1 3 0 10n
+
+* Dummy current sources to prevent floating nodes
+I1 1 0 0A
+I2 2 0 0A
+
+
+.END

@@ -1,0 +1,12 @@
+NMOS testbench
+
+* add a line here to include the model library
+.inc "C:/Users/DELL/Desktop/Siemens AMS 2025/lab3/ee214b_hspice.sp"
+
+VGS 1 0 DC 0
+VDS 2 0 DC 0.05
+M1 2 1 0 0 nch W=10u L=180n
+.dc VGS 0 1.8 0.01
+.plot dc I(VDS)
+.end
+

@@ -1,0 +1,35 @@
+* === OPAMP BEHAVIORAL SUBCKT ===
+.subckt opamp 1 2 3
+Eopamp 1 0 4 0 1
+Gp 0 4 2 3 0.6289
+Iopen1 2 0 0A
+Iopen2 3 0 0A
+Rp 4 0 15.9k
+Cp 4 0 10n
+.ends opamp
+
+* === SIGNAL SOURCES ===
+*V1 VIN1 0 SIN(0 1 1k)     ; 1V amplitude sine at 1kHz
+*V2 VIN2 0 SIN(0 0.5 1k)   ; 0.5V amplitude sine at 1kHz
+
+* === SUMMING RESISTORS INTO NON-INVERTING INPUT ===
+R1 VIN1 NPLUS 10k
+R2 VIN2 NPLUS 10k
+
+* === FEEDBACK NETWORK ON INVERTING INPUT ===
+Rf NMIN OUT 9k
+Rin NMIN 0 1k
+
+* === OPAMP INSTANCE ===
+XOP OUT NPLUS NMIN opamp
+
+* === ANALYSIS ===
+
+*.TRAN 10u 10m
+*.PRINT TRAN V(VIN1) V(VIN2) V(OUT)
+
+*.MEAS TRAN VIN1_peak MAX V(VIN1)
+*.MEAS TRAN VIN2_peak MAX V(VIN2)
+*.MEAS TRAN VOUT_peak MAX V(OUT)
+
+.END

@@ -1,0 +1,50 @@
+OPAMP CIRCUIT SIMULATION
+*** opamp subcuircuit ***
+.subckt opamp 1 2 3
+
+* VCVS with gain 10000
+Eopamp 1 0 4 0 1
+Gp 0 4 2 3 0.6289            ; A0 = Gp * Rp
+* redundant current sources to avoid errors
+Iopen1 2 0 0A
+Iopen2 3 0 0A
+
+* Parameters
+Rp 4 0 15.9k            ; dominant pole resistor
+Cp 4 0 10n                    ; dominant pole capacitor
+
+.ends opamp
+
+*** Circuit ***
+*V1 IN+ 0 DC 1V               ; 1V DC input
+Vsig IN+ 0 SIN(0 1 10meg 0 0 0)     ; 1V amplitude, 1kHz frequency sine wave
+
+
+Rin IN- 0 1k                ; Input resistor
+Rf IN- OUT 9k                ; Feedback resistor
+XOP OUT IN+ IN- opamp  ; Op-amp subcircuit
+
+*** Transfer Function Analysis ***
+*.TF V(OUT) V1
+
+*** Transient Analysis ***
+.TRAN 2n 200n 2n           ; Step = 20 us, Stop time = 2 ms
+*.TRAN 20u 2m 20u
+*** Probes ***
+.PRINT TRAN V(IN+) V(OUT)
+.PLOT TRAN V(IN+) V(OUT)
+
+*** Measurement Commands ***
+* Voltage-controlled voltage source creates differential node
+E_DIFF VDIFF 0 IN+ IN- 1
+
+* Measure peak differential input
+.MEAS TRAN Vdiff_peak MAX V(VDIFF)
+
+* Optional: also measure single-ended if needed
+.MEAS TRAN Vsig_peak MAX V(IN+)
+.MEAS TRAN Vout_peak MAX V(OUT)
+
+
+
+.END

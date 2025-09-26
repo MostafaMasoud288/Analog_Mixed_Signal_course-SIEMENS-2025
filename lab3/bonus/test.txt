@@ -1,0 +1,25 @@
+NMOS testbench
+
+* add a line here to include the model library
+.inc "C:/Users/DELL/Desktop/Siemens AMS 2025/lab3/ee214b_hspice.sp"
+
+
+
+* VDS bias to saturation
+VDS 2 0 DC 1.8
+* VGS sweep input
+VGS 1 0 DC 0
+
+* NMOS device (adjust W/L as needed)
+M1 2 1 0 0 nch W=10u L=180n
+
+* Sweep VGS from 0 to 0.8V to capture subthreshold
+.dc VGS 0 0.8 1m
+
+* Print ID to waveform viewer
+.plot dc I(VDS)
+
+.end
+
+
+

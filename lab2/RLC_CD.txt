@@ -1,0 +1,6 @@
+* RLC Low-Pass Filter - criticallydamped
+Vin 1 0 1
+R1 2 1 63.24 
+L1 3 2 1m
+C1 3 0 1u
+.end

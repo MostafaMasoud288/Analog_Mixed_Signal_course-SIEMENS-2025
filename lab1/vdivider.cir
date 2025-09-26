@@ -1,0 +1,6 @@
+*** VOLTAGE DIVIDER CIRCUIT ***
+V1 1 0 12
+R1 1 2 1K
+R2 2 0 2K
+.op
+.end

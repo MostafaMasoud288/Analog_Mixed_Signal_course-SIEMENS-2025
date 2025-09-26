@@ -1,0 +1,27 @@
+* CMOS Inverter Transient Simulation
+
+* Include model
+.lib "my_nmos.lib"
+.lib "my_pmos.lib"
+
+** Circuit Description **
+
+VDD 2 0 DC 1.8V
+
+* Pulse input: VIN from 0V to 1.8V, period=100ps, rise/fall=5ps, pulse width=50ps
+VIN 1 0 PULSE(0 1.8 0 5p 5p 50p 100p)
+
+* Circuit (PMOS on top, NMOS on bottom)
+M1 3 1 0 0 nmos_part1_6 W=10u L=180n AD=4.5 AS=4.5 PD=20.9 PS=20.9
+M2 3 1 2 2 pmos_part1_6 W=20u L=180n AD=4.5 AS=4.5 PD=20.9 PS=20.9
+
+** Analysis Requests **
+.TRAN 1p 200p
+
+** Output Requests **
+.MEAS TRAN t_PHL TRIG V(1) VAL=0.9 RISE=1 TARG V(3) VAL=0.9 FALL=1
+.MEAS TRAN t_PLH TRIG V(1) VAL=0.9 FALL=1 TARG V(3) VAL=0.9 RISE=1
+
+.measure tran tp param='(t_PHL+t_PLH)/2'
+
+.END

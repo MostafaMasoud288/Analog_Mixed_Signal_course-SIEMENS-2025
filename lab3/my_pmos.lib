@@ -1,0 +1,35 @@
+*************Notes***************
+
+* You may use LTspice help.
+
+* Any question mark (?) should be replaced by a word or a numeric value.
+
+* Use pmos_part1_i where i refers to the deliverable you
+* are working on.
+
+*---------------------------------*
+* Part 1.1
+* my_pmos.lib
+.model pmos_part1_1 PMOS (LEVEL=1 VT0=-0.4 KP=91.85u LAMBDA=0)
+
+
+*---------------------------------*
+* Part1.2
+* add a line here (same as Part 1.1 except for one more parameter)
+* Don't forget to change the model name to nmos_part1_2
+.model pmos_part1_2 PMOS (LEVEL=1 VT0=-0.4 KP=91.85u LAMBDA=0.1 CJ=0 CJSW=0)
+
+*---------------------------------*
+
+* Part 1.3
+*.add a line here (same as Part 1.2 except for one more parameter)
+.model pmos_part1_3 PMOS (LEVEL=3 VT0=-0.4 KP=91.85u vmax=1.5e5 CJ=0 CJSW=0)
+
+*---------------------------------*
+
+* Part 1.6
+* add a line here (same as Part 1.3 but you have to add CJ and CJSW. Take care of the units)
+.model pmos_part1_6 PMOS (LEVEL=3 VT0=-0.4 KP=91.85u CJ=1e-15 CJSW=1e-16)
+*---------------------------------*
+
+

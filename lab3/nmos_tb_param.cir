@@ -1,0 +1,20 @@
+* Include model library
+.lib "C:/Users/DELL/Desktop/Siemens AMS 2025/lab3/my_nmos.lib"
+
+** Parameter definition **
+.param VGSval = 0
+.param VDSval = 0
+
+** Circuit Description **
+VGS 1 0 DC 'VGSval'
+VDS 2 0 DC 'VDSval'
+M1 2 1 0 0 nmos_part1_3 W=10u L=180n
+
+** Analysis Requests **
+*.DC VDS 0 1.8 0.1
+.step param VDSval 0 1.8 0.1
+.step param VGSval 0 1.8 0.3
+.op
+.plot dc i(VDS) v(2)
+
+.END
